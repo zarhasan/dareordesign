@@ -1,0 +1,12 @@
+/* Libraries */
+
+/* Tailwind */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Custom */
+@import "partials/typography.css";
+@import "partials/utilities.css";
+@import "partials/components.css";
+@import "partials/global.css";

@@ -1,0 +1,11 @@
+html {
+  @apply text-[16px] md:text-[1.9vw] xl:text-[1.2vw] 2xl:text-[0.9375vw];
+}
+
+body {
+  @apply bg-white !font-primary leading-relaxed text-gray-900 antialiased;
+  -webkit-font-feature-settings: "liga" 0;
+  font-feature-settings: "liga" 0;
+  -webkit-font-variant-ligatures: no-common-ligatures;
+  font-variant-ligatures: no-common-ligatures;
+}

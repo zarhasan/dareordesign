@@ -1,0 +1,7 @@
+svg:not([class]) {
+  @apply h-auto w-full;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  display: none;
+}
