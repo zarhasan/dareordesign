@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { LinkSchema } from '~/schema/partials/Link';
 import { TagSchema } from '~/schema/partials/Tag';
 import { S3ObjectSchema } from '~/schema/S3Object';
 
@@ -11,4 +12,5 @@ export const ChallengeSchema = z.object({
     .array(TagSchema, { required_error: "Add at least 1 Tag" })
     .min(1, { message: "Add at least 1 tag" })
     .max(10),
+  links: z.array(LinkSchema).max(10).optional(),
 });

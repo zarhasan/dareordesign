@@ -34,7 +34,8 @@ import {
     Form, Link, useActionData, useFetcher, useLoaderData, useTransition
 } from '@remix-run/react';
 import {
-    IconCopy, IconEye, IconPencil, IconPlus, IconSourceCode, IconThumbDown, IconThumbUp
+    IconCopy, IconExternalLink, IconEye, IconPencil, IconPlus, IconSourceCode, IconThumbDown,
+    IconThumbUp
 } from '@tabler/icons';
 import CodeMirror from '@uiw/react-codemirror';
 
@@ -115,6 +116,26 @@ export default function Index() {
         </div>
 
         <Images images={data.challenge.images} />
+
+        {data?.challenge?.links && data?.challenge?.links?.length > 0 && (
+          <ul className="py-6 px-8">
+            {data.challenge.links.map((link) => {
+              return (
+                <li>
+                  <a
+                    className="btn btn--neutral btn--sm text-sm"
+                    target="_blank"
+                    href={link.value}
+                  >
+                    {link.name}
+
+                    <IconExternalLink className="ml-2 h-auto w-3" />
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
 
       <div className="flex w-full grow flex-col items-start justify-start lg:w-1/5">

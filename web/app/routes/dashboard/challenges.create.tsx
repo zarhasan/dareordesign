@@ -6,6 +6,8 @@ import InputMedia from '~/components/InputMedia';
 import { insertChallenge } from '~/queries/challenge.server';
 import { ChallengeSchema } from '~/schema/Challenge';
 import { ChallengeObject, ChallengeServerSchema } from '~/schema/Challenge.server';
+import { LinkObject } from '~/schema/partials/Link';
+import { TagObject } from '~/schema/partials/Tag,server';
 import { authenticator } from '~/services/auth.server';
 import slugify from '~/utils/slugify';
 
@@ -88,10 +90,19 @@ export function ChallengeForm({
   const disabled =
     transition.state === "loading" || transition.state === "submitting";
 
-  const [tagsList, tags] = useList<any>(
+  const [tagsList, tags] = useList<Omit<TagObject, "slug">>(
     defaultValues?.tags || [
       {
         name: "",
+      },
+    ]
+  );
+
+  const [linksList, links] = useList<LinkObject>(
+    defaultValues?.links || [
+      {
+        name: "",
+        value: "https://",
       },
     ]
   );
@@ -185,6 +196,87 @@ export function ChallengeForm({
             }
           >
             Add Tag
+          </Button>
+        </div>
+      )}
+
+      <Divider>Links</Divider>
+
+      {linksList.map((link, index) => {
+        return (
+          <FormControl
+            error={
+              zorm.errors.links(index).name() !== undefined ||
+              zorm.errors.links(index).value() !== undefined
+            }
+          >
+            <div className="flex items-center justify-start gap-4">
+              <div className="grow">
+                {zorm.fields
+                  .links(index)
+                  .name((props: { name: string; id: string }) => (
+                    <Input
+                      placeholder="Enter A Link Name"
+                      name={props.name}
+                      id={props.id}
+                      defaultValue={linksList[index].name}
+                      sx={{ flexGrow: 1 }}
+                    />
+                  ))}
+
+                {zorm.errors.links(index).name((e) => (
+                  <FormHelperText>{e.message}</FormHelperText>
+                ))}
+              </div>
+
+              <div className="grow">
+                {zorm.fields
+                  .links(index)
+                  .value((props: { name: string; id: string }) => (
+                    <Input
+                      placeholder="Enter A Link Value"
+                      name={props.name}
+                      id={props.id}
+                      defaultValue={linksList[index].value}
+                      sx={{ flexGrow: 1 }}
+                    />
+                  ))}
+
+                {zorm.errors.links(index).value((e) => (
+                  <FormHelperText>{e.message}</FormHelperText>
+                ))}
+              </div>
+
+              <Button
+                variant="outlined"
+                color="neutral"
+                onClick={() => links.removeAt(index)}
+              >
+                <IconMinus />
+              </Button>
+            </div>
+          </FormControl>
+        );
+      })}
+
+      {zorm.errors.links((e) => (
+        <ErrorMessage message={e.message} />
+      ))}
+
+      {linksList.length < 10 && (
+        <div className="flex items-center justify-end">
+          <Button
+            variant="outlined"
+            color="neutral"
+            startDecorator={<IconPlus />}
+            onClick={() =>
+              links.push({
+                name: "",
+                value: "https://",
+              })
+            }
+          >
+            Add Link
           </Button>
         </div>
       )}
